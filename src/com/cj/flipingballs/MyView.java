@@ -12,23 +12,32 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 @SuppressLint("WrongCall") public class MyView extends View{
 
 	public MyView(Context context) {
 		super(context);
+		this.context=context;
 	}
 	public MyView(Context context,AttributeSet as)
 	{
 		super(context, as);
+		this.context=context;
 	}
 	public MyView(Context context,AttributeSet as,int ds)
 	{
 		super(context,as,ds);
+		this.context=context;
 	}
+	
+	
+
+	Context context;
 	class Ball
 	{
 		
@@ -57,6 +66,14 @@ import android.view.View;
 			{
 				
 			}
+			if((location.x+v.vx*20/1000-radius)<0||(location.x+v.vx*20/1000+radius)>width)
+			{
+				v.vx*=-1;
+			}
+			if((location.y+v.vy*20/1000-radius)<0||(location.y+v.vy*20/1000+radius)>height)
+			{
+				v.vy*=-1;
+			}
 			return false;
 		}
 		Ball creat(float x,float y)
@@ -80,6 +97,7 @@ import android.view.View;
 	{
 		float startX=0,starY=0,endX=0,endY=0;
 	}
+	int height,width;
 	Random random=new Random(255);
 	ArrayList<Ball> balls=new ArrayList<MyView.Ball>();
 	ArrayList<Wall> walls=new ArrayList<Wall>();
@@ -87,6 +105,8 @@ import android.view.View;
 	protected void onDraw(Canvas canvas) {
 		// 
 
+			height=this.getHeight();
+			width=this.getWidth();
 			
 			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			
@@ -104,6 +124,8 @@ import android.view.View;
 		// 
 		super.onAttachedToWindow();
 		run();
+		
+
 	}
 	
 	@Override
@@ -182,8 +204,10 @@ import android.view.View;
 	{
 		if (haveMove) {
 			for (int i = 0; i < balls.size(); i++) {
+				balls.get(i).collisionListenner();
 				balls.get(i).location.x += (balls.get(i).v.vx / (1000 / 20));
 				balls.get(i).location.y += (balls.get(i).v.vy / (1000 / 20));
+				
 			}
 
 			haveMove = false;
