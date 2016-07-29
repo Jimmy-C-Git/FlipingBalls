@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 		float height1=dm.ydpi;
 		float width2=dm.widthPixels;
 		float height2=dm.heightPixels;
-		
-		setContentView(new MyView(this));
+		setContentView(new TwoDWorld(this));
+		//setContentView(new MyView(this));
     }
 }
